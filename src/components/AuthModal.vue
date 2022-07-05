@@ -1,10 +1,18 @@
 <template>
   <!-- Auth Modal -->
-  <div class="fixed inset-0 z-10 hidden overflow-y-auto" id="modal">
+  <div
+    class="fixed inset-0 z-10 overflow-y-auto"
+    id="modal"
+    :class="{ hidden: !isAuthModalOpen }"
+  >
     <div
       class="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0"
     >
-      <div class="fixed inset-0 transition-opacity">
+      <div
+        class="fixed inset-0 transition-opacity"
+        @click="toggleAuthModal"
+        v-on:keydown="toggleAuthModal"
+      >
         <div class="absolute inset-0 bg-gray-800 opacity-75"></div>
       </div>
 
@@ -29,22 +37,34 @@
 
           <!-- Tabs -->
           <ul class="mb-4 flex flex-wrap">
-            <li class="flex-auto text-center">
+            <li
+              class="flex-auto text-center"
+              @click="setLoginTab"
+              v-on:keydown="setLoginTab"
+            >
               <a
-                class="block rounded bg-blue-600 py-3 px-4 text-white transition hover:text-white"
+                class="block rounded py-3 px-4 transition"
                 href="#"
+                :class="[activeTab === 'login' ? activeTabClass : '']"
                 >Login</a
               >
             </li>
-            <li class="flex-auto text-center">
-              <a class="block rounded py-3 px-4 transition" href="#"
+            <li
+              class="flex-auto text-center"
+              @click="setRegisterTab"
+              v-on:keydown="setRegisterTab"
+            >
+              <a
+                class="block rounded py-3 px-4 transition"
+                href="#"
+                :class="[activeTab === 'register' ? activeTabClass : '']"
                 >Register</a
               >
             </li>
           </ul>
 
           <!-- Login Form -->
-          <form>
+          <form v-if="activeTab === 'login'">
             <!-- Email -->
             <div class="mb-3">
               <label class="mb-2 inline-block" for="email">
@@ -75,7 +95,7 @@
             </button>
           </form>
           <!-- Registration Form -->
-          <form>
+          <form v-if="activeTab === 'register'">
             <!-- Name -->
             <div class="mb-3">
               <label class="mb-2 inline-block" for="name">
@@ -167,8 +187,33 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from "vuex";
+
 export default {
   name: "AuthModal",
+  data() {
+    return {
+      activeTab: "login",
+    };
+  },
+  methods: {
+    setLoginTab() {
+      this.activeTab = "login";
+    },
+    setRegisterTab() {
+      this.activeTab = "register";
+    },
+  },
+  computed: {
+    ...mapState(["isAuthModalOpen"]),
+    ...mapMutations(["toggleAuthModal"]),
+    activeTabClass() {
+      return {
+        "bg-blue-600": true,
+        "text-white": true,
+      };
+    },
+  },
 };
 </script>
 
