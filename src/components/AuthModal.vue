@@ -39,8 +39,8 @@
           <ul class="mb-4 flex flex-wrap">
             <li
               class="flex-auto text-center"
-              @click="setLoginTab"
-              v-on:keydown="setLoginTab"
+              @click="setActiveTab('login')"
+              v-on:keydown="setActiveTab('login')"
             >
               <a
                 class="block rounded py-3 px-4 transition"
@@ -51,8 +51,8 @@
             </li>
             <li
               class="flex-auto text-center"
-              @click="setRegisterTab"
-              v-on:keydown="setRegisterTab"
+              @click="setActiveTab('register')"
+              v-on:keydown="setActiveTab('register')"
             >
               <a
                 class="block rounded py-3 px-4 transition"
@@ -197,11 +197,8 @@ export default {
     };
   },
   methods: {
-    setLoginTab() {
-      this.activeTab = "login";
-    },
-    setRegisterTab() {
-      this.activeTab = "register";
+    setActiveTab(selectedTab) {
+      this.activeTab = selectedTab;
     },
   },
   computed: {
